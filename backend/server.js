@@ -6,7 +6,9 @@ const fs = require('fs');
 const https = require('https');
 
 const app = express();
-app.use(cors());
+
+app.use(cors({ origin: 'http://localhost:8081', credentials: true }));
+
 app.use(express.json());
 
 const db = mysql.createConnection({
