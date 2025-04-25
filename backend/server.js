@@ -7,7 +7,7 @@ const https = require('https');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:8081', credentials: true }));
+app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
 
 app.use(express.json());
 
@@ -48,6 +48,16 @@ app.post('/api/login', (req, res) => {
         } else {
             res.json({ message: 'Invalid credentials' });
         }
+    });
+});
+
+app.get('/api/articles', (req, res) => {
+    db.query('SELECT * FROM articles', (err, results) => {
+        if (err) {
+            console.error('DB error:', err);
+            return res.status(500).json({ message: 'DB error' });
+        }
+        res.json(results);
     });
 });
 
