@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const NewsHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   return (
@@ -97,6 +98,8 @@ const NewsHeader = () => {
                 type="text"
                 placeholder="Search articles..."
                 className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-news-red"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Button
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
@@ -105,6 +108,10 @@ const NewsHeader = () => {
               >
                 <Search className="h-5 w-5" />
               </Button>
+            </div>
+            <div className="mt-4 p-2 border border-dashed border-red-400">
+              <strong>Search Result:</strong>
+              <div dangerouslySetInnerHTML={{ __html: searchQuery }} />
             </div>
           </div>
         )}
