@@ -7,7 +7,7 @@ const https = require('https');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:8080', credentials: true }));
+app.use(cors({ origin: 'https://localhost:8080', credentials: true }));
 
 app.use(express.json());
 
@@ -20,25 +20,12 @@ const db = mysql.createConnection({
 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
-    const sql = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+    //const sql = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
     // Note: This is vulnerable to SQL injection. Do not use in production.
     // Use parameterized queries or ORM to prevent SQL injection.
     // Example of a parameterized query:
-    // const sql = 'SELECT * FROM users WHERE username = ? AND password = ?';
-    // db.query(sql, [username, password], (err, results) => {
-    //     if (err) {
-    //         console.error("SQL Error:", err);  // Log the actual error
-    //         return res.json({ message: 'Error' });
-    //     }
-    //     if (results.length > 0) { 
-    //         res.json({ message: 'Login successful' });
-    //     } else {
-    //         res.json({ message: 'Invalid credentials' });
-    //     }
-    // });
-
-
-    db.query(sql, (err, results) => {
+    const sql = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    db.query(sql, [username, password], (err, results) => {
         if (err) {
             console.error("SQL Error:", err);  // Log the actual error
             return res.json({ message: 'Error' });
@@ -49,6 +36,19 @@ app.post('/api/login', (req, res) => {
             res.json({ message: 'Invalid credentials' });
         }
     });
+
+
+    // db.query(sql, (err, results) => {
+    //     if (err) {
+    //         console.error("SQL Error:", err);  // Log the actual error
+    //         return res.json({ message: 'Error' });
+    //     }
+    //     if (results.length > 0) {
+    //         res.json({ message: 'Login successful' });
+    //     } else {
+    //         res.json({ message: 'Invalid credentials' });
+    //     }
+    // });
 });
 
 app.get('/api/articles', (req, res) => {
